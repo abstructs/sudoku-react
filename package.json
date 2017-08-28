@@ -10,7 +10,7 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": { 
+  "dependencies": {
     "bulma": "^0.5.1",
     "express": "^4.15.3",
     "react": "^15.6.1",

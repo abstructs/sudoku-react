@@ -9740,17 +9740,96 @@ module.exports = getHostComponentFromComposite;
 const React = __webpack_require__(82);
 const ReactDOM = __webpack_require__(98);
 
-class Home extends React.Component {
+// TODO: Create react state
+// TODO: Render board from state
+// TODO: Allow user to change values
+// TODO: Function for valid boards
+// TODO: Solve function
+
+class Board extends React.Component {
+  constructor(props) {
+    super(props);
+
+    var game = [];
+
+    for (var i = 0; i < 9; i++) {
+      game.push([]);
+      for (var j = 0; j < 9; j++) {
+        game[i].push(0);
+      }
+    }
+
+    this.state = { values: game };
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.makeBoard = this.makeBoard.bind(this);
+  }
+
+  handleKeyDown(event, rowIndex, colIndex) {
+    if (event.target.value.length < 1 && event.keyCode >= 48 && event.keyCode <= 57) {
+      var newArr = this.state.values.slice();
+      newArr[rowIndex][colIndex] = parseInt(String.fromCharCode(event.keyCode));
+      this.setState({ values: newArr });
+    } else if (event.keyCode == 8) {
+      var newArr = this.state.values.slice();
+      newArr[rowIndex][colIndex] = 0;
+      this.setState({ values: newArr });
+    }
+  }
+
+  makeBoard() {
+    const board = this.state.values.map((row, rowIndex) => React.createElement(
+      'div',
+      { className: 'columns is-gapless', style: { width: 500, height: 12 } },
+      row.map((col, colIndex) => React.createElement(
+        'div',
+        { className: 'column is-0', style: { width: 25, height: 25 } },
+        React.createElement(Box, { rowIndex: rowIndex, colIndex: colIndex, value: this.state.values[rowIndex][colIndex], handleKeyDown: this.handleKeyDown })
+      ))
+    ));
+
+    return board;
+  }
+
   render() {
     return React.createElement(
-      'h1',
-      null,
-      'yes'
+      'div',
+      { className: '' },
+      this.makeBoard()
     );
   }
 }
 
-ReactDOM.render(React.createElement(Home, null), document.getElementById('app'));
+class Box extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.props = nextProps;
+  }
+
+  handleKeyDown(event) {
+    var index = {
+      rowIndex: this.props.rowIndex,
+      colIndex: this.props.colIndex
+    };
+
+    this.props.handleKeyDown(event, index.rowIndex, index.colIndex);
+  }
+
+  render() {
+    if (this.props.value == 0) {
+      return React.createElement('input', { className: 'input has-text-centered', type: 'text', value: '', onKeyDown: this.handleKeyDown });
+    } else {
+      return React.createElement('input', { className: 'input has-text-centered', type: 'text', value: this.props.value, onKeyDown: this.handleKeyDown });
+    }
+  }
+}
+
+ReactDOM.render(React.createElement(Board, null), document.getElementById('app'));
 
 /***/ }),
 /* 82 */

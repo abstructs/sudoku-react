@@ -11,19 +11,34 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
 
-    var game = [];
+    var blankGame = [];
 
     for(var i = 0; i < 9; i++) {
-      game.push([]);
+      blankGame.push([]);
       for(var j = 0; j < 9; j++) {
-        game[i].push(0);
+        blankGame[i].push(0);
       }
     }
 
-    this.state = {values: game};
+    var gameFromInternet1 = [
+      [0, 0, 0,  0, 0, 8,  5, 0, 0],
+      [7, 0, 0,  4, 1, 0,  0, 6, 8],
+      [3, 5, 8,  2, 0, 0,  0, 4, 0],
+      [9, 0, 5,  8, 4, 0,  1, 0, 6],
+      [8, 6, 0,  0, 7, 0,  2, 0, 3],
+      [0, 0, 0,  0, 5, 0,  0, 0, 0],
+      [0, 8, 0,  7, 0, 0,  0, 0, 2],
+      [0, 0, 6,  0, 2, 9,  8, 3, 0],
+      [4, 0, 3,  1, 0, 0,  7, 0, 0]
+    ];
+
+    this.state = {values: gameFromInternet1};
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.makeBoard = this.makeBoard.bind(this);
+    this.isValidBoard = this.isValidBoard.bind(this);
+    this.BOARD_HEIGHT = 9;
+    this.BOARD_WIDTH = 9;
   }
   
   handleKeyDown(event, rowIndex, colIndex) {
@@ -37,6 +52,31 @@ class Board extends React.Component {
       newArr[rowIndex][colIndex] = 0;
       this.setState({values: newArr});
     }
+  }
+
+  isValidBoard() {
+    var testBoard = this.state.values.slice();
+
+
+    var boardGroups = [];
+    var rows = [];
+    var columns = [];
+    var units = [];
+    
+
+    for (var i = 0; i < testBoard.length; i++) {
+      rows.push([]);
+      columns.push([]);
+      for (var j = 0; j < this.BOARD_WIDTH; j++) {
+        rows[i].push(testBoard[i][j]); 
+        
+      }
+      for (var j = 0; j < this.BOARD_HEIGHT; j++) {
+        columns[i].push(testBoard[j][i]);
+      }
+    }
+
+    return <div></div>;
   }
 
   makeBoard() {
@@ -56,6 +96,7 @@ class Board extends React.Component {
     return ( 
       <div className="">
         {this.makeBoard()}
+        {this.isValidBoard()}
       </div>
     );
   }

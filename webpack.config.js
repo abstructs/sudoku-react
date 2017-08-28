@@ -7,9 +7,17 @@ module.exports = {
         filename: 'bundle.js'
     },
     module: {
-        loaders: [
-            { js: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-            { css: /\.css$/, loader: "style-loader!css-loader" }
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /(node_modules|bower_components)/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['react']
+              }
+            }
+          }
         ]
     },
     devServer: {
