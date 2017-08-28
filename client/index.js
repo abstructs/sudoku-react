@@ -57,8 +57,6 @@ class Board extends React.Component {
   isValidBoard() {
     var testBoard = this.state.values.slice();
 
-
-    var boardGroups = [];
     var rows = [];
     var columns = [];
     var units = [];
@@ -66,7 +64,7 @@ class Board extends React.Component {
 
     for (var i = 0; i < testBoard.length; i++) {
       rows.push([]);
-      columns.push([]);
+      columns.push([]);      
       for (var j = 0; j < this.BOARD_WIDTH; j++) {
         rows[i].push(testBoard[i][j]); 
         
@@ -75,6 +73,15 @@ class Board extends React.Component {
         columns[i].push(testBoard[j][i]);
       }
     }
+
+    for(var i = 0; i < this.BOARD_HEIGHT; i += 3) {
+      for(var j = 0; j < this.BOARD_WIDTH; j += 3) {
+        units.push(testBoard[j].slice(i, i + 3).concat(testBoard[j + 1].slice(i, i + 3)).concat(testBoard[j + 2].slice(i, i + 3)));
+      }
+    }
+
+    console.log(units);
+    console.log(testBoard);
 
     return <div></div>;
   }
